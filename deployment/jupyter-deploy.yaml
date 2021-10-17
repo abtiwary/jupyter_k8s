@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: jupyter
+  name: jupyter
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: jupyter
+  template:
+    metadata:
+      labels:
+        app: jupyter
+    spec:
+      containers:
+        - name: jupyter
+          image: anaconda/python3:jupyter
+          imagePullPolicy: Never
+          volumeMounts:
+            - name: jupyter-storage
+              mountPath: /notebooks
+      volumes:
+        - name: jupyter-storage
+          persistentVolumeClaim:
+            claimName: jupyter-pvc
